@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 public class Component
 {
-    public int ownerId;
+    public uint ownerId;
 }
 
 
 public interface IComponentManager
 {
-    void OnEntityDestroyed(int entityId);
+    void OnEntityDestroyed(uint entityId);
 }
 
 
 public class ComponentManager<T> : IComponentManager where T : Component
 {
-    protected Dictionary<int, T> componentPool = new Dictionary<int, T>();
+    protected Dictionary<uint, T> componentPool = new Dictionary<uint, T>();
 
-    public void AddComponent(int entityId, T component)
+    public void AddComponent(uint entityId, T component)
     {
         if (componentPool.ContainsKey(entityId))
             componentPool[entityId] = component;
@@ -26,25 +26,25 @@ public class ComponentManager<T> : IComponentManager where T : Component
         component.ownerId = entityId;
     }
 
-    public void RemoveComponent(int entityId)
+    public void RemoveComponent(uint entityId)
     {
         if (componentPool.ContainsKey(entityId))
             componentPool.Remove(entityId);
     }
 
-    public T GetComponent(int entityId)
+    public T GetComponent(uint entityId)
     {
         if (componentPool.TryGetValue(entityId, out T component))
             return component;
         return null;
     }
 
-    public bool HasComponent(int entityId)
+    public bool HasComponent(uint entityId)
     {
         return componentPool.ContainsKey(entityId);
     }
 
-    public void OnEntityDestroyed(int entityId)
+    public void OnEntityDestroyed(uint entityId)
     {
         RemoveComponent(entityId);
     }

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 public class Entity
 {
-    public int id;
+    public uint id;
 }
 
 
 public class EntityManager
 {
-    private int currentId = 0;
-    private Dictionary<int, Entity> entityPool = new Dictionary<int, Entity>();
-    private Queue<int> recycledIds = new Queue<int>();
+    private uint currentId = 0;
+    private Dictionary<uint, Entity> entityPool = new Dictionary<uint, Entity>();
+    private Queue<uint> recycledIds = new Queue<uint>();
 
     private List<IComponentManager> componentManagers = new List<IComponentManager>();
 
@@ -28,7 +28,7 @@ public class EntityManager
         componentManagers.Remove(componentManager);
     }
 
-    private int GenerateId()
+    private uint GenerateId()
     {
         if (recycledIds.Count > 0)
         {
@@ -37,7 +37,7 @@ public class EntityManager
         return currentId++;
     }
 
-    private void RecycleId(int id)
+    private void RecycleId(uint id)
     {
         if (!recycledIds.Contains(id))
         {
@@ -47,7 +47,7 @@ public class EntityManager
 
     public Entity CreateEntity()
     {
-        int newId = GenerateId();
+        uint newId = GenerateId();
         Entity entity = new Entity
         {
             id = newId
@@ -57,7 +57,7 @@ public class EntityManager
         return entity;
     }
 
-    public void DestroyEntity(int entityId)
+    public void DestroyEntity(uint entityId)
     {
         if (entityPool.ContainsKey(entityId))
         {
@@ -70,7 +70,7 @@ public class EntityManager
         }
     }
 
-    public Entity GetEntity(int entityId)
+    public Entity GetEntity(uint entityId)
     {
         if (entityPool.TryGetValue(entityId, out Entity entity))
         {
@@ -79,7 +79,7 @@ public class EntityManager
         return null;
     }
 
-    public bool HasEntity(int entityId)
+    public bool HasEntity(uint entityId)
     {
         return entityPool.ContainsKey(entityId);
     }

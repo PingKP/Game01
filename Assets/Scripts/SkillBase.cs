@@ -14,6 +14,4 @@ public class SkillBase : ScriptableObject
     public int ExecuteDelay => executeDelay;
     public string Description => description;
     public int Power => power;
-
-
 }

@@ -45,7 +45,7 @@ public class HealthManager : ComponentManager<HealthComponent>
         healthSystem = system;
     }
 
-    public void CreateHealthComponent(int entityId, int maxHealth)
+    public void CreateHealthComponent(uint entityId, int maxHealth)
     {
         HealthComponent newHealthComponent = new HealthComponent
         {
