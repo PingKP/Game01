@@ -6,7 +6,7 @@ public class Unit
     public UnitBase unitBase;
 
     public int level;
-    public int exp;
+    public int totalExp;
 
     public string Name => customizedName ?? unitBase.Name;
 

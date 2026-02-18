@@ -6,6 +6,7 @@ public class Item : ScriptableObject, IBattleAction
     [SerializeField] protected string name;
     [SerializeField] protected string description;
     [SerializeField] protected int executeDelay;
+    [SerializeField] protected GameObject executeMethod;
 
     protected ActionType actionType = ActionType.item;
 
