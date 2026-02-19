@@ -2,6 +2,7 @@ using Unity.Entities;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Burst;
+using Unity.Transforms;
 
 
 public struct PlayerTag : IComponentData { }
@@ -37,11 +38,11 @@ public partial class PlayerInputSystem : SystemBase
     protected override void OnUpdate()
     {
         var currentInput = (float2)input.Player.Move.ReadValue<Vector2>();
-        foreach (var direction 
+        foreach (var unitMover
             in SystemAPI.Query<
-                RefRW<CharactorDirectionXZ>>().WithAll<PlayerTag>())
+                RefRW<UnitMover>>().WithAll<PlayerTag>())
         {
-            direction.ValueRW.value = currentInput;
+            unitMover.ValueRW.moveDirectionXZ = currentInput;
         }
     }
 }

@@ -18,6 +18,7 @@ public class MouseWorldPosition : MonoBehaviour
         if (plane.Raycast(mouseCameraRay, out float rayLength))
         {
             Vector3 worldPosition = mouseCameraRay.GetPoint(rayLength);
+            Debug.Log($"Mouse world position: {worldPosition}");
             return worldPosition;
         }
         else
