@@ -3,7 +3,9 @@ using UnityEngine;
 using Unity.Mathematics;
 using Unity.Burst;
 
+
 public struct PlayerTag : IComponentData { }
+
 
 public class PlayerAuthoring : MonoBehaviour
 {
@@ -13,9 +15,12 @@ public class PlayerAuthoring : MonoBehaviour
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent<PlayerTag>(entity);
+            AddComponent<CameraTarget>(entity);
+            AddComponent<InitializedCameraTargetTag>(entity);
         }
     }
 }
+
 
 public partial class PlayerInputSystem : SystemBase
 {
@@ -32,7 +37,9 @@ public partial class PlayerInputSystem : SystemBase
     protected override void OnUpdate()
     {
         var currentInput = (float2)input.Player.Move.ReadValue<Vector2>();
-        foreach (var direction in SystemAPI.Query<RefRW<CharactorDirectionXZ>>().WithAll<PlayerTag>())
+        foreach (var direction 
+            in SystemAPI.Query<
+                RefRW<CharactorDirectionXZ>>().WithAll<PlayerTag>())
         {
             direction.ValueRW.value = currentInput;
         }
