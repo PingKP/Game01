@@ -32,7 +32,9 @@ public partial struct UnitMoveSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var deltaTime = SystemAPI.Time.DeltaTime;
+        var job = new UnitMoverJob();
+        job.ScheduleParallel();
+        /*
         foreach (var (unitMover, velocity)
                         in SystemAPI.Query<
                             RefRO<UnitMover>,
@@ -43,6 +45,20 @@ public partial struct UnitMoveSystem : ISystem
             var moveVelocity = moveDirection * unitMover.ValueRO.moveSpeed;
             velocity.ValueRW.Linear = new float3(moveVelocity.x, originalVelocity.y, moveVelocity.y)  ;
         }
+        */
+    }
+}
+
+
+[BurstCompile]
+public partial struct UnitMoverJob : IJobEntity
+{
+    public void Execute(ref PhysicsVelocity velocity, in UnitMover unitMover)
+    {
+        var originalVelocity = velocity.Linear;
+        var moveDirection = unitMover.moveDirectionXZ;
+        var moveVelocity = moveDirection * unitMover.moveSpeed;
+        velocity.Linear = new float3(moveVelocity.x, originalVelocity.y, moveVelocity.y);
     }
 }
 
@@ -69,12 +85,12 @@ public partial struct MoveTargetSystem : ISystem
             var distance = math.distance(targetPosition, currentPosition);
             if (distance < moveTarget.ValueRO.stopDistance)
             {
-                Debug.Log("Arrived at target");
+                // Debug.Log("Arrived at target");
                 moveTarget.ValueRW.targetPosition = float3.zero;
                 unitMover.ValueRW.moveDirectionXZ = float2.zero;
                 continue;
             }
-            Debug.Log("On My Way");
+            // Debug.Log("On My Way");
             float3 moveDirection = targetPosition - currentPosition;
             unitMover.ValueRW.moveDirectionXZ = math.normalize(new float2(moveDirection.x, moveDirection.z));
 
